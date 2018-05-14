@@ -3,6 +3,7 @@ import librosa
 # functions to produce melspectrogram in shape [1,1,256,256]; probably should be a class
 # I adjusted the n-mels to 256, but left the hop_length and n_fft the same; not sure how
 # that affects the quality of the spectrogram
+# to use: pass a PosixPath to get_audio()
 
 def open_audio(fn, sr=None):
     """Opens audio file using Librosa given the file path
