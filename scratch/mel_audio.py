@@ -9,15 +9,11 @@ import librosa
 # a different way to adjust audio size
 def adj_length(raw, length=131070):
     raw_max = np.argmax(raw)
-    print("raw_max: ", raw_max)
     start = max(0, (raw_max-(length//2)))
     end = start+length
-    print("end-start:", end-start)
     if len(raw) < length:
         pad_width = (length-len(raw)//2)
-        print("pad_width:", pad_width)
         raw = np.pad(raw, (pad_width), 'constant')
-        print("raw_pad: ", len(raw))
     if (len(raw)-raw_max) < length:
         pad_width = (0, length-(len(raw)-raw_max))
         raw = np.pad(raw, pad_width, 'constant')
