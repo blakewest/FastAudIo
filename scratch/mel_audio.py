@@ -5,6 +5,19 @@ import librosa
 # that affects the quality of the spectrogram
 # to use: pass a PosixPath to get_audio()
 
+
+# a different way to adjust audio size
+def adj_length(raw):
+    """takes the loudest point in audio and gets 3 second clip (1.5 sec on each side of max"""
+    raw_max = np.argmax(raw)
+    start = max(0, (raw_max-65535))
+    end = raw_max+65535
+    if end < 131070:
+        raw = np.pad(raw, (131070-end), 'constant')
+        end = raw_max+65535
+    raw_s = raw[start:end]
+    return raw_s
+
 def open_audio(fn, sr=None):
     """Opens audio file using Librosa given the file path
     
@@ -34,6 +47,9 @@ input_length=131070
 # combination of weak-feature-extractor and kaggle starter kernel;
 def get_mel(fn, sr=None, input_length=input_length, n_fft=1024, hop_length=512, n_mels=256):
     y, sr = open_audio(fn, sr)
+   
+ 
+    """
     # from kaggle starter kernel
     if len(y) > input_length:
             max_offset = len(y) - input_length
@@ -46,6 +62,8 @@ def get_mel(fn, sr=None, input_length=input_length, n_fft=1024, hop_length=512, 
         else:
             offset = 0
         y = np.pad(y, (offset, input_length - len(y) - offset), "constant")
+    """
+
     mel_feat = librosa.feature.melspectrogram(y,sr,n_fft=n_fft,hop_length=hop_length,n_mels=n_mels)
     inpt = librosa.power_to_db(mel_feat).T
 
