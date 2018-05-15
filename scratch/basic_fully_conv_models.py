@@ -162,8 +162,12 @@ def display_sample(train, category=None):
     return ipd.Audio(fname)
 
 def munge_and_save_data(trn_path, trn_df, x_filepath, y_filepath):
+    print("Loading files...")
     xs = load_audio_from_df(trn_path, trn_df)
-    xs = preprocess_audio(x)
+    print("Processing audio...")
+    xs = preprocess_audio(xs)
+    print("Processing labels...")
     ys = preprocess_ys(trn_df['label'])
+    print("Saving xs and ys...")
     save_data(xs, x_filepath)
-    save_ata(ys, y_filepath)
+    save_data(ys, y_filepath)
