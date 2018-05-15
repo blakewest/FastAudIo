@@ -1,13 +1,11 @@
 import librosa
 
-# functions to produce melspectrogram in shape [1,1,256,256]; probably should be a class
-# I adjusted the n-mels to 256, but left the hop_length and n_fft the same; not sure how
-# that affects the quality of the spectrogram
+# functions to produce melspectrogram in shape [1,1,128,128]; probably should be a class
 # to use: pass a PosixPath to get_audio()
 
 
 # a different way to adjust audio size
-def adj_length(raw, length=131070):
+def adj_length(raw, length=65534): #length = ~1.5 seconds
     raw_max = np.argmax(raw)
     start = max(0, (raw_max-(length//2)))
     end = start+length
@@ -46,7 +44,7 @@ def open_audio(fn, sr=None):
 input_length=131070
 
 # combination of weak-feature-extractor and kaggle starter kernel;
-def get_mel(fn, sr=None, input_length=input_length, n_fft=1024, hop_length=512, n_mels=256):
+def get_mel(fn, sr=None, input_length=input_length, n_fft=1024, hop_length=512, n_mels=128):
     y, sr = open_audio(fn, sr)
    
  
@@ -76,5 +74,5 @@ def get_mel(fn, sr=None, input_length=input_length, n_fft=1024, hop_length=512, 
     inpt = np.reshape(inpt,(1,1,inpt.shape[0],inpt.shape[1]))
     return inpt
 
-# returns melspectrogram in shape [1,1,256,256]
+# returns melspectrogram in shape [1,1,128,128]
 def get_audio(path, sr=None): return get_mel(str(path), sr)
