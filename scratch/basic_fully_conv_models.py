@@ -14,15 +14,15 @@ class BasicAudioModel(nn.Module):
             nn.Softmax(),
         )
 
+    def forward(self, input):
+        return self.model(input)
+
 def get_trn_val_split(x, y, val_pct=0.15):
     val_idxs = get_cv_idxs(len(x), val_pct=val_pct)
     if isinstance(x, list):
         return [([arr[i] for i in val_idxs], [arr[i] for i in range(len(arr)) if i not in val_idxs]) for arr in [x,y]]
     else:
         return split_by_idx(val_idxs, x, y)
-
-    def forward(self, input):
-        return self.model(input)
 
 class AudioLearner(Learner):
     def __init__(self, data, models, **kwargs):
@@ -154,3 +154,16 @@ def load_data(filename):
     with open(filename, 'rb') as infile:
         result = pickle.load(infile)
     return result
+
+def display_sample(train, category=None):
+    sample = train[train['label'] == category].sample() if category else train.sample()
+    fname = str(TRN_PATH/sample['fname'].values[0])
+    print(sample)
+    return ipd.Audio(fname)
+
+def munge_and_save_data(trn_path, trn_df, x_filepath, y_filepath):
+    xs = load_audio_from_df(trn_path, trn_df)
+    xs = preprocess_audio(x)
+    ys = preprocess_ys(trn_df['label'])
+    save_data(xs, x_filepath)
+    save_ata(ys, y_filepath)
