@@ -2,16 +2,26 @@ class BasicAudioModel(nn.Module):
     def __init__(self, num_classes, bs):
         super().__init__()
         self.model = nn.Sequential(
-            nn.Conv1d(1, 64, 9),
+            nn.Conv1d(1, 16, 9),
+            nn.ReLU(),
+            nn.Conv1d(16, 16, 9),
             nn.ReLU(),
             nn.MaxPool1d(16),
-            nn.Conv1d(64, 128, 3),
+            nn.Dropout(0.1),
+            nn.Conv1d(16, 32, 3),
             nn.ReLU(),
-            nn.MaxPool1d(16),
-            nn.Conv1d(128, num_classes, 3),
+            nn.Conv1d(32, 32, 3),
+            nn.ReLU(),
+            nn.MaxPool1d(8),
+            nn.Dropout(0.01),
+            nn.Conv1d(32, 256, 3),
+            nn.ReLU(),
+            nn.Conv1d(256, 256, 3),
+            nn.Dropout(0.01),
+            nn.MaxPool1d(4),
+            nn.Conv1d(256, num_classes, 3),
             Lambda(lambda tensor: torch.mean(tensor, 2, keepdim=True)),
             Lambda(lambda tensor: tensor.view(tensor.shape[0], -1)),
-            nn.Softmax(),
         )
 
     def forward(self, input):
@@ -40,7 +50,8 @@ def retrieve_file(filepath, sample_rate=16000):
 
 def preprocess_audio(audio_files):
     norm = librosa.util.normalize
-    return [norm(file).reshape(1, file.shape[0]) for file in audio_files]
+    trimmed_xs = [librosa.effects.trim(norm(x))[0] for x in audio_files]
+    return [x.reshape(1, x.shape[0]) for x in trimmed_xs]
 
 def preprocess_ys(labels, one_hot=False):
     if isinstance(labels[0], str):
@@ -57,9 +68,9 @@ class AudioModelData():
         self.path = path
         self.bs = bs
         self.trn_ds, self.val_ds, self.test_ds = trn_ds, val_ds, test_ds
-        self.trn_dl = AudioDataLoader(trn_ds, bs, sampler=SortSampler(trn_ds, key=lambda x: len(trn_ds[x][0][0])))
-        self.val_dl = AudioDataLoader(val_ds, bs, sampler=SortSampler(val_ds, key=lambda x: len(val_ds[x][0][0])))
-        self.test_dl = AudioDataLoader(test_ds, bs, sampler=SortSampler(test_ds, key=lambda x: len(test_ds[x][0][0]))) if test_ds is not None else None
+        self.trn_dl = AudioDataLoader(trn_ds, bs, sampler=SortishSampler(trn_ds, key=lambda x: len(trn_ds[x][0][0]), bs=bs))
+        self.val_dl = AudioDataLoader(val_ds, bs, sampler=SortishSampler(val_ds, key=lambda x: len(val_ds[x][0][0]), bs=bs))
+        self.test_dl = AudioDataLoader(test_ds, bs, sampler=SortishSampler(test_ds, key=lambda x: len(test_ds[x][0][0]),bs=bs)) if test_ds is not None else None
         self.num_classes = self.trn_dl.dataset.get_c()
 
     @classmethod
