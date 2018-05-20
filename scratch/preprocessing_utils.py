@@ -50,7 +50,9 @@ def load_features(path='', feature_name='log_mel_spec', n_features=40, n_fft=204
                 mel_spec = librosa.feature.melspectrogram(file, sr=sample_rate, 
                                                           n_mels=n_features, n_fft=n_fft, 
                                                           hop_length=hop_length)
-                feature = librosa.amplitude_to_db(mel_spec, ref=np.max)
+                log_mel_spec = librosa.amplitude_to_db(mel_spec, ref=np.max)
+                # amplitude_to_db normalizes to [-80.0, 0.0]
+                feature = (log_mel_spec + 40.0) / 40.0  # rescale to [-1.0, 1.0]
             elif feature_name == 'mfcc':
                 feature = librosa.feature.mfcc(file, sr=sample_rate, 
                                                n_mfcc=n_features, n_fft=n_fft, 
