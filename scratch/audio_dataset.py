@@ -9,34 +9,42 @@ from fastai.transforms import *
 from fastai.layer_optimizer import *
 from fastai.dataloader import DataLoader
 from fastai.dataset import *
+#from audio_transforms import *
 
-
-def adj_length(raw, length=65534): #length = ~1.5 seconds
-    raw_max = np.argmax(raw)
-    start = max(0, (raw_max-(length//2)))
-    end = start+length
-    if len(raw) < length:
-        pad_width = (length-len(raw)//2)
-        raw = np.pad(raw, (pad_width), 'constant')
-    if (len(raw)-raw_max) < length:
-        pad_width = (0, length-(len(raw)-raw_max))
-        raw = np.pad(raw, pad_width, 'constant')
-    return raw[start:end]
 
 
 # functions to produce melspectrogram in shape [1,1,128,128]; probably should be a class
 # I adjusted the n-mels to 256, but left the hop_length and n_fft the same; not sure how
 # that affects the quality of the spectrogram
 
-def open_audio(fn, sr=None):
-    """Opens audio file using Librosa given the file path
+
+#return raw audio at specified length
+def adj_length(raw, length=3*44100): 
+    raw_len = len(raw)
+    if raw_len < length:
+        raw = np.pad(raw, ((length-raw_len)//2), 'constant')
+    raw = raw[:length]
+    raw_max = np.argmax(raw)
+    start = max(0, (raw_max-(length//2)))
+    end = start+(raw_max+(length//2))
+    if start == 0:
+        end = start+length
+    if start+end > length:
+        start = 0
+        end = length
+    return raw[start:end]
+
+def open_audio(fn, length=3*44100, sr=None):
+    """Opens raw audio file using Librosa given the file path
     
     Arguments:
         fn: the file path for the audio
+        sr: sample-rate (None maintains sr of original)
         
     Returns:
-        The audio as a numpy array (TODO: of floats normalized to range between 0.0 - 1.0)
-        and sampling rate
+        aud: audio as a numpy array (TODO: of floats normalized to range between 0.0 - 1.0)
+        sr: sampling rate
+        l: length of aud array
     """
     #flags = TODO
     if not os.path.exists(fn):
@@ -47,18 +55,20 @@ def open_audio(fn, sr=None):
         try:
             aud, sr = librosa.load(str(fn), sr=sr)#.astype(np.float32)
             if aud is None: raise OSError(f'File not recognized by librosa: {fn}')
-            return aud, sr
+            aud = adj_length(aud, length)
+            aud = np.reshape(aud, (1, aud.shape[0]))
+            return aud#, sr#, l
         except Exception as e:
             raise OSError('Error handling audio at: {}'.format(fn)) from e
 
-
-input_length=131070
-
+"""
+# replacing with John's process_audio_utils version
 # combination of weak-feature-extractor and kaggle starter kernel;
-def get_mel(fn, sr=None, input_length=input_length, n_fft=1024, hop_length=512, n_mels=128):
-    y, sr = open_audio(fn, sr)
-    y = adj_length(y)
-    """
+def get_mel(y, sr=44100, n_fft=1024, hop_length=512, n_mels=128): # add input_length param ??
+    #y = open_audio(fn)
+    #y, sr = open_audio(fn, sr)
+    #y = adj_length(y)
+    
     # from kaggle starter kernel
     if len(y) > input_length:
             max_offset = len(y) - input_length
@@ -71,8 +81,8 @@ def get_mel(fn, sr=None, input_length=input_length, n_fft=1024, hop_length=512, 
         else:
             offset = 0
         y = np.pad(y, (offset, input_length - len(y) - offset), "constant")
-    """
-    mel_feat = librosa.feature.melspectrogram(y,sr,n_fft=n_fft,hop_length=hop_length,n_mels=n_mels)
+    
+    mel_feat = librosa.feature.melspectrogram(y[0,:],sr,n_fft=n_fft,hop_length=hop_length,n_mels=n_mels)
     inpt = librosa.power_to_db(mel_feat).T
 
     #quick hack for now
@@ -82,9 +92,14 @@ def get_mel(fn, sr=None, input_length=input_length, n_fft=1024, hop_length=512, 
     # input needs to be 4D, batch_size X 1 X input_size[0] X input_size[1]
     inpt = np.reshape(inpt,(1,inpt.shape[0],inpt.shape[1]))
     return inpt
+"""
+# returns raw or aelspectrogram if melspect=True
+def get_audio(path, melspect=False): 
+    if melspect: 
+        return get_mel(open_audio(path))
+    else:
+        return open_audio(path)
 
-# returns melspectrogram in shape [1,1,256,256]
-def get_audio(path, sr=None): return get_mel(str(path), sr)
 
 class PassthruDataset(Dataset):
     def __init__(self,*args, is_reg=True, is_multi=False):
@@ -111,6 +126,7 @@ class BaseDataset(Dataset):
 
     def get1item(self, idx):
         x,y = self.get_x(idx),self.get_y(idx)
+        #x = adj_length(x)
         return self.get(self.transform, x, y)
 
     def __getitem__(self, idx):
@@ -165,7 +181,8 @@ class FilesDataset(BaseDataset):
         self.path,self.fnames = path,fnames
         super().__init__(transform)
     def get_sz(self): return 128 #return self.transform.sz
-    def get_x(self, i): return get_audio(os.path.join(self.path, self.fnames[i]), sr=None) 
+    def get_x(self, i): return open_audio(os.path.join(self.path, self.fnames[i]), sr=None)
+        #return get_audio(os.path.join(self.path, self.fnames[i]), sr=None) 
         # from Image Dataset
         # return open_image(os.path.join(self.path, self.fnames[i]))
     def get_n(self): return len(self.fnames)
