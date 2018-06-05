@@ -32,16 +32,16 @@ def write_file(data, filename, path='', sample_rate=44100):
     wavfile.write(filename, sample_rate, int_data)
 
 
-def load_audio_files(path, filenames=None, sample_rate=None):
+def load_audio_files(path, filenames=None, sample_rate=None, trim=True):
     '''
     Loads in audio files and resamples if necessary.
-    
+
     Args:
         path (str or PosixPath): directory where the audio files are located
-        filenames (list of str): list of filenames to load. if not provided, load all 
+        filenames (list of str): list of filenames to load. if not provided, load all
                                  files in path
         sampling_rate (int): if provided, audio will be resampled to this rate
-    
+
     Returns:
         list of audio files as numpy arrays, dtype np.float32 between [-1, 1]
     '''
@@ -51,10 +51,12 @@ def load_audio_files(path, filenames=None, sample_rate=None):
     files = []
     for filename in tqdm(filenames, unit='files'):
         data, file_sr = read_file(filename, path, sample_rate=sample_rate)
+        if trim:
+            data = librosa.effects.trim(data)[0]
         files.append(data)
     return files
-    
-    
+
+
 def resample_path(src_path, dst_path, sample_rate=16000):
     ''' Resamples a folder of wav files into a new folder at the given sample_rate '''
     src_path, dst_path = Path(src_path), Path(dst_path)
