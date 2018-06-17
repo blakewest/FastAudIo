@@ -9,7 +9,7 @@ from fastai.transforms import *
 from fastai.layer_optimizer import *
 from fastai.dataloader import DataLoader
 from fastai.dataset import *
-#from audio_transforms import *
+from audio_transforms import *
 
 
 
@@ -18,11 +18,11 @@ from fastai.dataset import *
 # that affects the quality of the spectrogram
 
 
-#return raw audio at specified length
+# return raw audio at specified length
 def adj_length(raw, length=3*44100): 
     raw_len = len(raw)
     if raw_len < length:
-        raw = np.pad(raw, ((length-raw_len)//2), 'constant')
+        raw = np.pad(raw, ((length-raw_len)//2), 'wrap')
     raw = raw[:length]
     raw_max = np.argmax(raw)
     start = max(0, (raw_max-(length//2)))
@@ -55,48 +55,18 @@ def open_audio(fn, length=3*44100, sr=None):
         try:
             aud, sr = librosa.load(str(fn), sr=sr)#.astype(np.float32)
             if aud is None: raise OSError(f'File not recognized by librosa: {fn}')
+            if aud.shape[0]==0: aud = np.append(aud, 0.0001)
+            #aud = librosa.effects.trim(aud)[0]
             aud = adj_length(aud, length)
-            aud = np.reshape(aud, (1, aud.shape[0]))
+            #aud = np.reshape(aud, (1, aud.shape[0]))
             return aud#, sr#, l
         except Exception as e:
             raise OSError('Error handling audio at: {}'.format(fn)) from e
 
-"""
-# replacing with John's process_audio_utils version
-# combination of weak-feature-extractor and kaggle starter kernel;
-def get_mel(y, sr=44100, n_fft=1024, hop_length=512, n_mels=128): # add input_length param ??
-    #y = open_audio(fn)
-    #y, sr = open_audio(fn, sr)
-    #y = adj_length(y)
-    
-    # from kaggle starter kernel
-    if len(y) > input_length:
-            max_offset = len(y) - input_length
-            offset = np.random.randint(max_offset)
-            y = y[offset:(input_length+offset)]
-    else:
-        if input_length > len(y):
-            max_offset = input_length - len(y)
-            offset = np.random.randint(max_offset)
-        else:
-            offset = 0
-        y = np.pad(y, (offset, input_length - len(y) - offset), "constant")
-    
-    mel_feat = librosa.feature.melspectrogram(y[0,:],sr,n_fft=n_fft,hop_length=hop_length,n_mels=n_mels)
-    inpt = librosa.power_to_db(mel_feat).T
-
-    #quick hack for now
-    if inpt.shape[0] < 128:
-        inpt = np.concatenate((inpt,np.zeros((128-inpt.shape[0],n_mels))),axis=0)
-
-    # input needs to be 4D, batch_size X 1 X input_size[0] X input_size[1]
-    inpt = np.reshape(inpt,(1,inpt.shape[0],inpt.shape[1]))
-    return inpt
-"""
-# returns raw or aelspectrogram if melspect=True
-def get_audio(path, melspect=False): 
+# returns raw or melspectrogram if melspect=True
+def get_audio(path, melspect=False, feature_name='log_mel_spec'): 
     if melspect: 
-        return get_mel(open_audio(path))
+        return get_mel(open_audio(path), feature_name=feature_name)
     else:
         return open_audio(path)
 
@@ -180,9 +150,11 @@ class FilesDataset(BaseDataset):
     def __init__(self, fnames, transform, path):
         self.path,self.fnames = path,fnames
         super().__init__(transform)
-    def get_sz(self): return 128 #return self.transform.sz
-    def get_x(self, i): return open_audio(os.path.join(self.path, self.fnames[i]), sr=None)
-        #return get_audio(os.path.join(self.path, self.fnames[i]), sr=None) 
+    def get_sz(self): return 259 #return self.transform.sz
+    def get_x(self, i): #return open_audio(os.path.join(self.path, self.fnames[i]), sr=None)
+        x = get_audio(os.path.join(self.path, self.fnames[i]), melspect=True, feature_name='log_mel_spec') #sr=None
+        x = np.reshape(x, (1, x.shape[0], x.shape[1]))
+        return x 
         # from Image Dataset
         # return open_image(os.path.join(self.path, self.fnames[i]))
     def get_n(self): return len(self.fnames)
@@ -326,6 +298,62 @@ class AudioData(ModelData):
 
 
 class AudioClassifierData(AudioData):
+    @classmethod
+    def from_paths(cls, path, bs=64, tfms=(None,None), trn_name='train', val_name='valid', test_name=None, test_with_labels=False, num_workers=8):
+        """ Read in images and their labels given as sub-folder names
+
+        Arguments:
+            path: a root path of the data (used for storing trained models, precomputed values, etc)
+            bs: batch size
+            tfms: transformations (for data augmentations). e.g. output of `tfms_from_model`
+            trn_name: a name of the folder that contains training images.
+            val_name:  a name of the folder that contains validation images.
+            test_name:  a name of the folder that contains test images.
+            num_workers: number of workers
+
+        Returns:
+            ImageClassifierData
+        """
+        assert not(tfms[0] is None or tfms[1] is None), "please provide transformations for your train and validation sets"
+        trn,val = [folder_source(path, o) for o in (trn_name, val_name)]
+        if test_name:
+            test = folder_source(path, test_name) if test_with_labels else read_dir(path, test_name)
+        else: test = None
+        datasets = cls.get_ds(FilesIndexArrayDataset, trn, val, tfms, path=path, test=test)
+        return cls(path, datasets, bs, num_workers, classes=trn[2])
+   
+    @classmethod
+    def from_csv(cls, path, folder, csv_fname, bs=64, tfms=(None,None),
+               val_idxs=None, suffix='', test_name=None, continuous=False, skip_header=True, num_workers=8):
+        """ Read in images and their labels given as a CSV file.
+
+        This method should be used when training image labels are given in an CSV file as opposed to
+        sub-directories with label names.
+
+        Arguments:
+            path: a root path of the data (used for storing trained models, precomputed values, etc)
+            folder: a name of the folder in which training images are contained.
+            csv_fname: a name of the CSV file which contains target labels.
+            bs: batch size
+            tfms: transformations (for data augmentations). e.g. output of `tfms_from_model`
+            val_idxs: index of images to be used for validation. e.g. output of `get_cv_idxs`.
+                If None, default arguments to get_cv_idxs are used.
+            suffix: suffix to add to image names in CSV file (sometimes CSV only contains the file name without file
+                    extension e.g. '.jpg' - in which case, you can set suffix as '.jpg')
+            test_name: a name of the folder which contains test images.
+            continuous: TODO
+            skip_header: skip the first row of the CSV file.
+            num_workers: number of workers
+
+        Returns:
+            ImageClassifierData
+        """
+        assert not (tfms[0] is None or tfms[1] is None), "please provide transformations for your train and validation sets"
+        assert not (os.path.isabs(folder)), "folder needs to be a relative path"
+        fnames,y,classes = csv_source(folder, csv_fname, skip_header, suffix, continuous=continuous)
+        return cls.from_names_and_array(path, fnames, y, classes, val_idxs, test_name,
+                num_workers=num_workers, suffix=suffix, tfms=tfms, bs=bs, continuous=continuous)
+ 
     @classmethod
     def from_names_and_array(cls, path, fnames,y,classes, val_idxs=None, test_name=None,
             num_workers=8, suffix='', tfms=(None,None), bs=64, continuous=False):
