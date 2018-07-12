@@ -17,12 +17,12 @@ from audio_transforms import *
 # I adjusted the n-mels to 256, but left the hop_length and n_fft the same; not sure how
 # that affects the quality of the spectrogram
 
-
+'''
 # return raw audio at specified length
-def adj_length(raw, length=3*44100): 
+def adj_length(raw, length=10*44100): 
     raw_len = len(raw)
     if raw_len < length:
-        raw = np.pad(raw, ((length-raw_len)//2), 'wrap')
+        raw = np.pad(raw, ((length-raw_len)//2), 'reflect')
     raw = raw[:length]
     raw_max = np.argmax(raw)
     start = max(0, (raw_max-(length//2)))
@@ -33,8 +33,9 @@ def adj_length(raw, length=3*44100):
         start = 0
         end = length
     return raw[start:end]
+'''
 
-def open_audio(fn, length=3*44100, sr=None):
+def open_audio(fn, length=10, sr=None):
     """Opens raw audio file using Librosa given the file path
     
     Arguments:
@@ -56,17 +57,19 @@ def open_audio(fn, length=3*44100, sr=None):
             aud, sr = librosa.load(str(fn), sr=sr)#.astype(np.float32)
             if aud is None: raise OSError(f'File not recognized by librosa: {fn}')
             if aud.shape[0]==0: aud = np.append(aud, 0.0001)
-            #aud = librosa.effects.trim(aud)[0]
-            aud = adj_length(aud, length)
+            if sr == None: sr = 44100
+            aud = librosa.effects.trim(aud)[0]
+            aud = adj_length(aud,length*sr)
             #aud = np.reshape(aud, (1, aud.shape[0]))
-            return aud#, sr#, l
+            return aud, sr#, l
         except Exception as e:
             raise OSError('Error handling audio at: {}'.format(fn)) from e
 
 # returns raw or melspectrogram if melspect=True
 def get_audio(path, melspect=False, feature_name='log_mel_spec'): 
     if melspect: 
-        return get_mel(open_audio(path), feature_name=feature_name)
+        x,sr = open_audio(path)
+        return get_mel(x,sr,feature_name=feature_name)
     else:
         return open_audio(path)
 
