@@ -1,0 +1,1009 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Resnet}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+         \PY{o}{\PYZpc{}}\PY{k}{reload\PYZus{}ext} autoreload
+         \PY{o}{\PYZpc{}}\PY{k}{autoreload} 2
+         
+         \PY{k+kn}{from} \PY{n+nn}{fastai}\PY{n+nn}{.}\PY{n+nn}{imports} \PY{k}{import} \PY{o}{*}
+         \PY{k+kn}{from} \PY{n+nn}{fastai}\PY{n+nn}{.}\PY{n+nn}{core} \PY{k}{import} \PY{o}{*}
+         \PY{k+kn}{from} \PY{n+nn}{fastai}\PY{n+nn}{.}\PY{n+nn}{io} \PY{k}{import} \PY{o}{*}
+         \PY{k+kn}{from} \PY{n+nn}{fastai}\PY{n+nn}{.}\PY{n+nn}{dataloader} \PY{k}{import} \PY{o}{*}
+         \PY{k+kn}{from} \PY{n+nn}{fastai}\PY{n+nn}{.}\PY{n+nn}{conv\PYZus{}learner} \PY{k}{import} \PY{o}{*}
+         \PY{k+kn}{from} \PY{n+nn}{fastai}\PY{n+nn}{.}\PY{n+nn}{learner} \PY{k}{import} \PY{o}{*}
+         \PY{k+kn}{from} \PY{n+nn}{fastai}\PY{n+nn}{.}\PY{n+nn}{models}\PY{n+nn}{.}\PY{n+nn}{resnet} \PY{k}{import} \PY{o}{*}
+         \PY{k+kn}{import} \PY{n+nn}{os}
+         \PY{k+kn}{from} \PY{n+nn}{audio\PYZus{}dataset} \PY{k}{import} \PY{o}{*}
+         \PY{k+kn}{from} \PY{n+nn}{audio\PYZus{}transforms} \PY{k}{import} \PY{o}{*}
+         
+         \PY{k+kn}{import} \PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{display} \PY{k}{as} \PY{n+nn}{ipd}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{k+kn}{import} \PY{n+nn}{librosa}
+         \PY{k+kn}{from} \PY{n+nn}{librosa} \PY{k}{import} \PY{n}{display}
+\end{Verbatim}
+
+
+    \subsection{Load Data}\label{load-data}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{PATH} \PY{o}{=} \PY{n}{Path}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/freesound}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{TRN\PYZus{}PATH} \PY{o}{=} \PY{n}{PATH}\PY{o}{/}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{audio\PYZus{}train}\PY{l+s+s1}{\PYZsq{}}
+         \PY{n}{TEST\PYZus{}PATH} \PY{o}{=} \PY{n}{PATH}\PY{o}{/}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{audio\PYZus{}test}\PY{l+s+s1}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{trn} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{PATH}\PY{o}{/}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{train.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{test} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{PATH}\PY{o}{/}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sample\PYZus{}submission.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{verified} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{trn}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{manually\PYZus{}verified}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n}{trn} \PY{o}{=} \PY{n}{trn}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fname}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{label}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+         \PY{n}{trn\PYZus{}sample} \PY{o}{=} \PY{n}{trn}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{1900}\PY{p}{]}
+         \PY{n}{trn}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}25}]:}           fname         label
+         0  00044347.wav        Hi-hat
+         1  001ca53d.wav     Saxophone
+         2  002d256b.wav       Trumpet
+         3  0033e230.wav  Glockenspiel
+         4  00353774.wav         Cello
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{trn}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{trn.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        \PY{n}{trn\PYZus{}sample}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{trn\PYZus{}sample.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{trn}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{trn}\PY{o}{.}\PY{n}{label}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}26}]:} (9473, 41)
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{fnames} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{trn}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fname}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} 
+         \PY{n}{test\PYZus{}fnames} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{test}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fname}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} 
+         \PY{n+nb}{len}\PY{p}{(}\PY{n}{fnames}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}fnames}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}27}]:} (9473, 9400)
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{trn\PYZus{}wavs} \PY{o}{=} \PY{p}{(}\PY{n}{PATH}\PY{o}{/}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{audio\PYZus{}train}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{*.wav}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{test\PYZus{}wavs} \PY{o}{=} \PY{p}{(}\PY{n}{PATH}\PY{o}{/}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{audio\PYZus{}test}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{*.wav}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n}{stats} \PY{o}{=} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[} \PY{l+m+mf}{0.18637}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[} \PY{l+m+mf}{0.30634}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \subsubsection{Listen to Sounds}\label{listen-to-sounds}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{test\PYZus{}preds} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{test}\PY{o}{.}\PY{n}{label}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{length}\PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{l+m+mi}{44100}\PY{p}{)} \PY{c+c1}{\PYZsh{}seconds * sample\PYZus{}rate}
+        \PY{n}{n} \PY{o}{=} \PY{l+m+mi}{4}
+        
+        \PY{c+c1}{\PYZsh{}play sample with stats}
+        \PY{c+c1}{\PYZsh{}length = 3*44100}
+        \PY{c+c1}{\PYZsh{}sample = os.path.join(TRN\PYZus{}PATH, fnames[n])}
+        \PY{n}{sample} \PY{o}{=} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{TEST\PYZus{}PATH}\PY{p}{,} \PY{n}{test\PYZus{}fnames}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{test\PYZus{}fnames}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{)}
+        \PY{n}{raw} \PY{o}{=} \PY{n}{open\PYZus{}audio}\PY{p}{(}\PY{n}{sample}\PY{p}{)}
+        \PY{n}{raw\PYZus{}len} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{raw}\PY{p}{)}
+        \PY{n}{raw\PYZus{}s} \PY{o}{=} \PY{n}{adj\PYZus{}length}\PY{p}{(}\PY{n}{raw}\PY{p}{,} \PY{n}{length}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}print(\PYZsq{}raw length: \PYZsq{}, raw\PYZus{}len, \PYZsq{}sample length:\PYZsq{}, len(raw\PYZus{}s))}
+        \PY{c+c1}{\PYZsh{}print(\PYZsq{}label:\PYZsq{}, trn[\PYZsq{}label\PYZsq{}].iloc[n], \PYZsq{}verified:\PYZsq{}, verified[n])}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{prediction:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{test\PYZus{}preds}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{)}
+        \PY{n}{ipd}\PY{o}{.}\PY{n}{Audio}\PY{p}{(}\PY{n}{raw\PYZus{}s}\PY{p}{,} \PY{n}{rate}\PY{o}{=}\PY{l+m+mi}{44100}\PY{p}{)}
+\end{Verbatim}
+
+
+    \subsubsection{Audio\_transforms}\label{audio_transforms}
+
+Transforms taken from Fastai's \texttt{transforms.py} and modified to
+work with Audio files. *Not shown because competition is still in
+progress.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{} @hidden\PYZus{}cell}
+        \PY{k}{class} \PY{n+nc}{Transform}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} A class that represents a transform.}
+        
+        \PY{l+s+sd}{    All other transforms should subclass it. All subclasses should override}
+        \PY{l+s+sd}{    do\PYZus{}transform.}
+        
+        \PY{l+s+sd}{    Arguments}
+        \PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+        \PY{l+s+sd}{        tfm\PYZus{}y : TfmType}
+        \PY{l+s+sd}{            type of transform}
+        \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{tfm\PYZus{}y}\PY{o}{=}\PY{n}{TfmType}\PY{o}{.}\PY{n}{NO}\PY{p}{)}\PY{p}{:}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfm\PYZus{}y}\PY{o}{=}\PY{n}{tfm\PYZus{}y}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{store} \PY{o}{=} \PY{n}{threading}\PY{o}{.}\PY{n}{local}\PY{p}{(}\PY{p}{)}
+        
+            \PY{k}{def} \PY{n+nf}{set\PYZus{}state}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{pass}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}call\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{:}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{set\PYZus{}state}\PY{p}{(}\PY{p}{)}
+                \PY{n}{x}\PY{p}{,}\PY{n}{y} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{y}\PY{p}{)} \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfm\PYZus{}y}\PY{o}{==}\PY{n}{TfmType}\PY{o}{.}\PY{n}{NO}
+                        \PY{k}{else} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)} \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfm\PYZus{}y} \PY{o+ow}{in} \PY{p}{(}\PY{n}{TfmType}\PY{o}{.}\PY{n}{PIXEL}\PY{p}{,} \PY{n}{TfmType}\PY{o}{.}\PY{n}{CLASS}\PY{p}{)}
+                        \PY{k}{else} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{transform\PYZus{}coord}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{)}
+                \PY{k}{return} \PY{n}{x}\PY{p}{,} \PY{n}{y}
+        
+            \PY{k}{def} \PY{n+nf}{transform\PYZus{}coord}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{y}
+        
+            \PY{k}{def} \PY{n+nf}{transform}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+                \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{do\PYZus{}transform}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{k+kc}{False}\PY{p}{)}
+                \PY{k}{return} \PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{do\PYZus{}transform}\PY{p}{(}\PY{n}{y}\PY{p}{,}\PY{k+kc}{True}\PY{p}{)}\PY{p}{)} \PY{k}{if} \PY{n}{y} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{k}{else} \PY{n}{x}
+        
+            \PY{n+nd}{@abstractmethod}
+            \PY{k}{def} \PY{n+nf}{do\PYZus{}transform}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{is\PYZus{}y}\PY{p}{)}\PY{p}{:} \PY{k}{raise} \PY{n+ne}{NotImplementedError}
+        
+        
+        \PY{k}{class} \PY{n+nc}{Denormalize}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} De\PYZhy{}normalizes an image, returning it to original format.}
+        \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{s}\PY{p}{)}\PY{p}{:}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{m}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{m}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{s}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{s}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}call\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n}{x}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{s}\PY{o}{+}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{m}
+        
+        
+        \PY{k}{class} \PY{n+nc}{Normalize}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} Normalizes an image to zero mean and unit standard deviation, given the mean m and std s of the original image \PYZdq{}\PYZdq{}\PYZdq{}}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{s}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}tfm\PYZus{}y=TfmType.NO}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{m}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{m}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{s}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{s}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}
+                \PY{c+c1}{\PYZsh{}self.tfm\PYZus{}y=tfm\PYZus{}y}
+        
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}call\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+                \PY{n}{x} \PY{o}{=} \PY{p}{(}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{m}\PY{p}{)}\PY{o}{/}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{s}
+                \PY{c+c1}{\PYZsh{}if self.tfm\PYZus{}y==TfmType.PIXEL and y is not None: y = (y\PYZhy{}self.m)/self.s}
+                \PY{k}{return} \PY{n}{x}\PY{p}{,}\PY{n}{y}
+        
+        \PY{k}{class} \PY{n+nc}{ChannelOrder}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    changes image array shape from (h, w, 3) to (3, h, w). }
+        \PY{l+s+sd}{    tfm\PYZus{}y decides the transformation done to the y element. }
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{tfm\PYZus{}y}\PY{o}{=}\PY{n}{TfmType}\PY{o}{.}\PY{n}{NO}\PY{p}{)}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfm\PYZus{}y}\PY{o}{=}\PY{n}{tfm\PYZus{}y}
+        
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}call\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{:}
+                \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{rollaxis}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+                \PY{c+c1}{\PYZsh{}if isinstance(y,np.ndarray) and (len(y.shape)==3):}
+                \PY{c+c1}{\PYZsh{}if self.tfm\PYZus{}y==TfmType.PIXEL: y = np.rollaxis(y, 2)}
+                \PY{c+c1}{\PYZsh{}elif self.tfm\PYZus{}y==TfmType.CLASS: y = y[...,0]}
+                \PY{k}{return} \PY{n}{x}\PY{p}{,}\PY{n}{y}
+        
+        \PY{k}{def} \PY{n+nf}{vocode}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{rate}\PY{o}{=}\PY{l+m+mf}{2.0}\PY{p}{)}\PY{p}{:}
+            \PY{k}{return} \PY{n}{librosa}\PY{o}{.}\PY{n}{phase\PYZus{}vocoder}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{rate}\PY{p}{)}\PY{p}{,} \PY{n}{y}
+        
+        \PY{k}{def} \PY{n+nf}{rand0}\PY{p}{(}\PY{n}{s}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{s}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{s}
+        
+        \PY{k}{def} \PY{n+nf}{rand1}\PY{p}{(}\PY{n}{s}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n+nb}{int}\PY{p}{(}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)}\PY{o}{*}\PY{n}{s}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{focus\PYZus{}mel}\PY{p}{(}\PY{n}{aud}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{c}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} highlights audio\PYZsq{}s mel\PYZus{}bands\PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{k}{if} \PY{n}{b} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:} \PY{k}{return} \PY{n}{aud}
+            \PY{n}{mu} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{average}\PY{p}{(}\PY{n}{aud}\PY{p}{[}\PY{p}{:}\PY{n}{b}\PY{p}{]}\PY{p}{)}
+            \PY{k}{return} \PY{n}{aud}\PY{p}{[}\PY{p}{:}\PY{n}{b}\PY{p}{]}\PY{o}{+}\PY{n}{mu}\PY{o}{*}\PY{n}{c}
+        
+        \PY{k}{class} \PY{n+nc}{RandomFocus\PYZus{}mel}\PY{p}{(}\PY{n}{Transform}\PY{p}{)}\PY{p}{:}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{tfm\PYZus{}y}\PY{o}{=}\PY{n}{TfmType}\PY{o}{.}\PY{n}{NO}\PY{p}{)}\PY{p}{:}
+                \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n}{tfm\PYZus{}y}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{c} \PY{o}{=} \PY{n}{b}\PY{p}{,}\PY{n}{c}
+                
+            \PY{k}{def} \PY{n+nf}{set\PYZus{}state}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{store}\PY{o}{.}\PY{n}{b\PYZus{}rand} \PY{o}{=} \PY{n}{rand1}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{store}\PY{o}{.}\PY{n}{c\PYZus{}rand} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{c}
+                
+            \PY{k}{def} \PY{n+nf}{do\PYZus{}transform}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{is\PYZus{}y}\PY{p}{)}\PY{p}{:}
+                \PY{n}{b} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{store}\PY{o}{.}\PY{n}{b\PYZus{}rand}
+                \PY{n}{c} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{store}\PY{o}{.}\PY{n}{c\PYZus{}rand}
+                \PY{n}{x} \PY{o}{=} \PY{n}{focus\PYZus{}mel}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{c}\PY{p}{)}
+                \PY{k}{return} \PY{n}{x}
+        
+        \PY{k}{def} \PY{n+nf}{lighting}\PY{p}{(}\PY{n}{im}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{c}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} adjusts image\PYZsq{}s balance and contrast\PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{k}{if} \PY{n}{b}\PY{o}{==}\PY{l+m+mi}{0} \PY{o+ow}{and} \PY{n}{c}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{:} \PY{k}{return} \PY{n}{im}
+            \PY{n}{mu} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{average}\PY{p}{(}\PY{n}{im}\PY{p}{)}
+            \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{clip}\PY{p}{(}\PY{p}{(}\PY{n}{im}\PY{o}{\PYZhy{}}\PY{n}{mu}\PY{p}{)}\PY{o}{*}\PY{n}{c}\PY{o}{+}\PY{n}{mu}\PY{o}{+}\PY{n}{b}\PY{p}{,}\PY{l+m+mf}{0.}\PY{p}{,}\PY{l+m+mf}{1.}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}
+        
+        \PY{k}{class} \PY{n+nc}{RandomLighting}\PY{p}{(}\PY{n}{Transform}\PY{p}{)}\PY{p}{:}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{tfm\PYZus{}y}\PY{o}{=}\PY{n}{TfmType}\PY{o}{.}\PY{n}{NO}\PY{p}{)}\PY{p}{:}
+                \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n}{tfm\PYZus{}y}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{c} \PY{o}{=} \PY{n}{b}\PY{p}{,}\PY{n}{c}
+        
+            \PY{k}{def} \PY{n+nf}{set\PYZus{}state}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{store}\PY{o}{.}\PY{n}{b\PYZus{}rand} \PY{o}{=} \PY{n}{rand0}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{store}\PY{o}{.}\PY{n}{c\PYZus{}rand} \PY{o}{=} \PY{n}{rand0}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{c}\PY{p}{)}
+        
+            \PY{k}{def} \PY{n+nf}{do\PYZus{}transform}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{is\PYZus{}y}\PY{p}{)}\PY{p}{:}
+                \PY{c+c1}{\PYZsh{}if is\PYZus{}y and self.tfm\PYZus{}y != TfmType.PIXEL: return x}
+                \PY{n}{b} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{store}\PY{o}{.}\PY{n}{b\PYZus{}rand}
+                \PY{n}{c} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{store}\PY{o}{.}\PY{n}{c\PYZus{}rand}
+                \PY{n}{c} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{n}{c}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)} \PY{k}{if} \PY{n}{c}\PY{o}{\PYZlt{}}\PY{l+m+mi}{0} \PY{k}{else} \PY{n}{c}\PY{o}{+}\PY{l+m+mi}{1}
+                \PY{n}{x} \PY{o}{=} \PY{n}{lighting}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{n}{c}\PY{p}{)}
+                \PY{k}{return} \PY{n}{x}
+               
+        \PY{k}{def} \PY{n+nf}{compose}\PY{p}{(}\PY{n}{im}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{fns}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} apply a collection of transformation functions fns to images}
+        \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+            \PY{k}{for} \PY{n}{fn} \PY{o+ow}{in} \PY{n}{fns}\PY{p}{:}
+                \PY{c+c1}{\PYZsh{}pdb.set\PYZus{}trace()}
+                \PY{n}{im}\PY{p}{,} \PY{n}{y} \PY{o}{=}\PY{n}{fn}\PY{p}{(}\PY{n}{im}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+            \PY{k}{return} \PY{n}{im} \PY{k}{if} \PY{n}{y} \PY{o+ow}{is} \PY{k+kc}{None} \PY{k}{else} \PY{p}{(}\PY{n}{im}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+        
+        
+        \PY{k}{class} \PY{n+nc}{Transforms}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{sz}\PY{p}{,} \PY{n}{tfms}\PY{p}{,} \PY{n}{normalizer}\PY{p}{,} \PY{n}{denorm}\PY{p}{,} \PY{n}{crop\PYZus{}type}\PY{o}{=}\PY{n}{CropType}\PY{o}{.}\PY{n}{CENTER}\PY{p}{,}
+                         \PY{n}{tfm\PYZus{}y}\PY{o}{=}\PY{n}{TfmType}\PY{o}{.}\PY{n}{NO}\PY{p}{,} \PY{n}{sz\PYZus{}y}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+                \PY{k}{if} \PY{n}{sz\PYZus{}y} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:} \PY{n}{sz\PYZus{}y} \PY{o}{=} \PY{n}{sz}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{sz}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{denorm}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{sz\PYZus{}y} \PY{o}{=} \PY{n}{sz}\PY{p}{,}\PY{n}{denorm}\PY{p}{,}\PY{n}{normalizer}\PY{p}{,}\PY{n}{sz\PYZus{}y}
+                \PY{n}{crop\PYZus{}tfm} \PY{o}{=} \PY{n}{crop\PYZus{}fn\PYZus{}lu}\PY{p}{[}\PY{n}{crop\PYZus{}type}\PY{p}{]}\PY{p}{(}\PY{n}{sz}\PY{p}{,} \PY{n}{tfm\PYZus{}y}\PY{p}{,} \PY{n}{sz\PYZus{}y}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfms} \PY{o}{=} \PY{n}{tfms}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfms}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{crop\PYZus{}tfm}\PY{p}{)}
+                \PY{k}{if} \PY{n}{normalizer} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfms}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{normalizer}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfms}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{ChannelOrder}\PY{p}{(}\PY{n}{tfm\PYZus{}y}\PY{p}{)}\PY{p}{)}
+        
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}call\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{im}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n}{compose}\PY{p}{(}\PY{n}{im}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfms}\PY{p}{)}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}repr\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfms}\PY{p}{)}
+        
+        
+        \PY{k}{def} \PY{n+nf}{image\PYZus{}gen}\PY{p}{(}\PY{n}{normalizer}\PY{p}{,} \PY{n}{denorm}\PY{p}{,} \PY{n}{sz}\PY{p}{,} \PY{n}{tfms}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{max\PYZus{}zoom}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{pad}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{crop\PYZus{}type}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,}
+                      \PY{n}{tfm\PYZus{}y}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{sz\PYZus{}y}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{pad\PYZus{}mode}\PY{o}{=}\PY{n}{cv2}\PY{o}{.}\PY{n}{BORDER\PYZus{}REFLECT}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{l+s+sd}{    Generate a standard set of transformations}
+        
+        \PY{l+s+sd}{    Arguments}
+        \PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+        \PY{l+s+sd}{     normalizer :}
+        \PY{l+s+sd}{         image normalizing function}
+        \PY{l+s+sd}{     denorm :}
+        \PY{l+s+sd}{         image denormalizing function}
+        \PY{l+s+sd}{     sz :}
+        \PY{l+s+sd}{         size, sz\PYZus{}y = sz if not specified.}
+        \PY{l+s+sd}{     tfms :}
+        \PY{l+s+sd}{         iterable collection of transformation functions}
+        \PY{l+s+sd}{     max\PYZus{}zoom : float,}
+        \PY{l+s+sd}{         maximum zoom}
+        \PY{l+s+sd}{     pad : int,}
+        \PY{l+s+sd}{         padding on top, left, right and bottom}
+        \PY{l+s+sd}{     crop\PYZus{}type :}
+        \PY{l+s+sd}{         crop type}
+        \PY{l+s+sd}{     tfm\PYZus{}y :}
+        \PY{l+s+sd}{         y axis specific transformations}
+        \PY{l+s+sd}{     sz\PYZus{}y :}
+        \PY{l+s+sd}{         y size, height}
+        \PY{l+s+sd}{     pad\PYZus{}mode :}
+        \PY{l+s+sd}{         cv2 padding style: repeat, reflect, etc.}
+        
+        \PY{l+s+sd}{    Returns}
+        \PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+        \PY{l+s+sd}{     type : ``Transforms``}
+        \PY{l+s+sd}{         transformer for specified image operations.}
+        
+        \PY{l+s+sd}{    See Also}
+        \PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+        \PY{l+s+sd}{     Transforms: the transformer object returned by this function}
+        \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+            \PY{k}{if} \PY{n}{tfm\PYZus{}y} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:} \PY{n}{tfm\PYZus{}y}\PY{o}{=}\PY{n}{TfmType}\PY{o}{.}\PY{n}{NO}
+            \PY{k}{if} \PY{n}{tfms} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:} \PY{n}{tfms}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+            \PY{k}{elif} \PY{o+ow}{not} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{tfms}\PY{p}{,} \PY{n}{collections}\PY{o}{.}\PY{n}{Iterable}\PY{p}{)}\PY{p}{:} \PY{n}{tfms}\PY{o}{=}\PY{p}{[}\PY{n}{tfms}\PY{p}{]}
+            \PY{k}{if} \PY{n}{sz\PYZus{}y} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:} \PY{n}{sz\PYZus{}y} \PY{o}{=} \PY{n}{sz}
+            \PY{k}{if} \PY{n}{scale} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+                \PY{n}{scale} \PY{o}{=} \PY{p}{[}\PY{n}{RandomScale}\PY{p}{(}\PY{n}{sz}\PY{p}{,} \PY{n}{max\PYZus{}zoom}\PY{p}{,} \PY{n}{tfm\PYZus{}y}\PY{o}{=}\PY{n}{tfm\PYZus{}y}\PY{p}{,} \PY{n}{sz\PYZus{}y}\PY{o}{=}\PY{n}{sz\PYZus{}y}\PY{p}{)} \PY{k}{if} \PY{n}{max\PYZus{}zoom} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}
+                         \PY{k}{else} \PY{n}{Scale}\PY{p}{(}\PY{n}{sz}\PY{p}{,} \PY{n}{tfm\PYZus{}y}\PY{p}{,} \PY{n}{sz\PYZus{}y}\PY{o}{=}\PY{n}{sz\PYZus{}y}\PY{p}{)}\PY{p}{]}
+            \PY{k}{elif} \PY{o+ow}{not} \PY{n}{is\PYZus{}listy}\PY{p}{(}\PY{n}{scale}\PY{p}{)}\PY{p}{:} \PY{n}{scale} \PY{o}{=} \PY{p}{[}\PY{n}{scale}\PY{p}{]}
+            \PY{k}{if} \PY{n}{pad}\PY{p}{:} \PY{n}{scale}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{AddPadding}\PY{p}{(}\PY{n}{pad}\PY{p}{,} \PY{n}{mode}\PY{o}{=}\PY{n}{pad\PYZus{}mode}\PY{p}{)}\PY{p}{)}
+            \PY{k}{if} \PY{n}{crop\PYZus{}type}\PY{o}{!=}\PY{n}{CropType}\PY{o}{.}\PY{n}{GOOGLENET}\PY{p}{:} \PY{n}{tfms}\PY{o}{=}\PY{n}{scale}\PY{o}{+}\PY{n}{tfms}
+            \PY{k}{return} \PY{n}{Transforms}\PY{p}{(}\PY{n}{sz}\PY{p}{,} \PY{n}{tfms}\PY{p}{,} \PY{n}{normalizer}\PY{p}{,} \PY{n}{denorm}\PY{p}{,} \PY{n}{crop\PYZus{}type}\PY{p}{,}
+                              \PY{n}{tfm\PYZus{}y}\PY{o}{=}\PY{n}{tfm\PYZus{}y}\PY{p}{,} \PY{n}{sz\PYZus{}y}\PY{o}{=}\PY{n}{sz\PYZus{}y}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{noop}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}dummy function for do\PYZhy{}nothing.}
+        \PY{l+s+sd}{    equivalent to: lambda x: x\PYZdq{}\PYZdq{}\PYZdq{}}
+            \PY{k}{return} \PY{n}{x}
+        
+        \PY{k}{class} \PY{n+nc}{AudTransforms}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{tfms}\PY{p}{,} \PY{n}{normalizer}\PY{p}{,} \PY{n}{denorm}\PY{p}{)}\PY{p}{:}
+                \PY{c+c1}{\PYZsh{}if sz\PYZus{}y is None: sz\PYZus{}y = sz}
+                \PY{c+c1}{\PYZsh{}self.sz,self.denorm,self.norm,self.sz\PYZus{}y = sz,denorm,normalizer,sz\PYZus{}y}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{denorm}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm} \PY{o}{=} \PY{n}{denorm}\PY{p}{,}\PY{n}{normalizer}
+                \PY{c+c1}{\PYZsh{}pdb.set\PYZus{}trace()}
+                \PY{c+c1}{\PYZsh{}crop\PYZus{}tfm = crop\PYZus{}fn\PYZus{}lu[crop\PYZus{}type](sz, tfm\PYZus{}y, sz\PYZus{}y)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfms} \PY{o}{=} \PY{n}{tfms}
+                \PY{c+c1}{\PYZsh{}self.tfms.append(crop\PYZus{}tfm)}
+                \PY{k}{if} \PY{n}{normalizer} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfms}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{normalizer}\PY{p}{)}
+                \PY{c+c1}{\PYZsh{}self.tfms.append(ChannelOrder())}
+        
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}call\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{im}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n}{compose}\PY{p}{(}\PY{n}{im}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfms}\PY{p}{)} 
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}repr\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfms}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{audio\PYZus{}gen}\PY{p}{(}\PY{n}{normalizer}\PY{p}{,} \PY{n}{denorm}\PY{p}{,} \PY{n}{tfms}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{tfms} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:} \PY{n}{tfms} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+            \PY{k}{elif} \PY{o+ow}{not} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{tfms}\PY{p}{,} \PY{n}{collections}\PY{o}{.}\PY{n}{Iterable}\PY{p}{)}\PY{p}{:} \PY{n}{tfms}\PY{o}{=}\PY{p}{[}\PY{n}{tfms}\PY{p}{]}
+            \PY{k}{return} \PY{n}{AudTransforms}\PY{p}{(}\PY{n}{tfms}\PY{p}{,} \PY{n}{normalizer}\PY{p}{,} \PY{n}{denorm}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{aud\PYZus{}tfms\PYZus{}from\PYZus{}stats}\PY{p}{(}\PY{n}{stats}\PY{p}{,} \PY{n}{aug\PYZus{}tfms}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{}def tfms\PYZus{}from\PYZus{}stats(stats, sz, aug\PYZus{}tfms=None, max\PYZus{}zoom=None, pad=0, crop\PYZus{}type=CropType.RANDOM,}
+                            \PY{c+c1}{\PYZsh{}tfm\PYZus{}y=None, sz\PYZus{}y=None, pad\PYZus{}mode=cv2.BORDER\PYZus{}REFLECT, norm\PYZus{}y=True, scale=None):}
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} Given the statistics of the training image sets, returns separate training and validation transform functions}
+        \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+            \PY{k}{if} \PY{n}{aug\PYZus{}tfms} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:} \PY{n}{aug\PYZus{}tfms}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+            \PY{c+c1}{\PYZsh{}tfm\PYZus{}norm = Normalize(*stats, tfm\PYZus{}y=tfm\PYZus{}y if norm\PYZus{}y else TfmType.NO) if stats is not None else None}
+            \PY{n}{tfm\PYZus{}norm} \PY{o}{=} \PY{n}{Normalize}\PY{p}{(}\PY{o}{*}\PY{n}{stats}\PY{p}{)} \PY{k}{if} \PY{n}{stats} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{k}{else} \PY{k+kc}{None}
+            \PY{n}{tfm\PYZus{}denorm} \PY{o}{=} \PY{n}{Denormalize}\PY{p}{(}\PY{o}{*}\PY{n}{stats}\PY{p}{)} \PY{k}{if} \PY{n}{stats} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{k}{else} \PY{k+kc}{None}
+            \PY{c+c1}{\PYZsh{}val\PYZus{}crop = CropType.CENTER if crop\PYZus{}type in (CropType.RANDOM,CropType.GOOGLENET) else crop\PYZus{}type}
+            \PY{c+c1}{\PYZsh{}val\PYZus{}tfm = image\PYZus{}gen(tfm\PYZus{}norm, tfm\PYZus{}denorm, sz, pad=pad, crop\PYZus{}type=val\PYZus{}crop,}
+                    \PY{c+c1}{\PYZsh{}tfm\PYZus{}y=tfm\PYZus{}y, sz\PYZus{}y=sz\PYZus{}y, scale=scale)}
+            \PY{n}{val\PYZus{}tfm} \PY{o}{=} \PY{n}{audio\PYZus{}gen}\PY{p}{(}\PY{n}{tfm\PYZus{}norm}\PY{p}{,} \PY{n}{tfm\PYZus{}denorm}\PY{p}{)}
+            \PY{c+c1}{\PYZsh{}trn\PYZus{}tfm = image\PYZus{}gen(tfm\PYZus{}norm, tfm\PYZus{}denorm, sz, pad=pad, crop\PYZus{}type=crop\PYZus{}type,}
+                    \PY{c+c1}{\PYZsh{}tfm\PYZus{}y=tfm\PYZus{}y, sz\PYZus{}y=sz\PYZus{}y, tfms=aug\PYZus{}tfms, max\PYZus{}zoom=max\PYZus{}zoom, pad\PYZus{}mode=pad\PYZus{}mode, scale=scale)}
+            \PY{n}{trn\PYZus{}tfm} \PY{o}{=} \PY{n}{audio\PYZus{}gen}\PY{p}{(}\PY{n}{tfm\PYZus{}norm}\PY{p}{,} \PY{n}{tfm\PYZus{}denorm}\PY{p}{,} \PY{n}{tfms}\PY{o}{=}\PY{n}{aug\PYZus{}tfms}\PY{p}{)}
+            \PY{k}{return} \PY{n}{trn\PYZus{}tfm}\PY{p}{,} \PY{n}{val\PYZus{}tfm}
+\end{Verbatim}
+
+
+    \subsubsection{ResNet}\label{resnet}
+
+Fastai's ResNet model.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{c+c1}{\PYZsh{} @hidden\PYZus{}cell}
+         
+         \PY{k}{def} \PY{n+nf}{conv}\PY{p}{(}\PY{n}{ni}\PY{p}{,} \PY{n}{nf}\PY{p}{,} \PY{n}{ks}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{nn}\PY{o}{.}\PY{n}{Conv2d}\PY{p}{(}\PY{n}{ni}\PY{p}{,} \PY{n}{nf}\PY{p}{,} \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{n}{ks}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{n}{stride}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{n}{ks}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{bias}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+         
+         
+         \PY{k}{def} \PY{n+nf}{bn1}\PY{p}{(}\PY{n}{planes}\PY{p}{)}\PY{p}{:}
+             \PY{n}{m} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{BatchNorm1d}\PY{p}{(}\PY{n}{planes}\PY{p}{)}
+             \PY{n}{m}\PY{o}{.}\PY{n}{weight}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{fill\PYZus{}}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+             \PY{n}{m}\PY{o}{.}\PY{n}{bias}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{zero\PYZus{}}\PY{p}{(}\PY{p}{)}
+             \PY{k}{return} \PY{n}{m}
+         
+         \PY{k}{def} \PY{n+nf}{bn}\PY{p}{(}\PY{n}{planes}\PY{p}{,} \PY{n}{init\PYZus{}zero}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+             \PY{n}{m} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{BatchNorm2d}\PY{p}{(}\PY{n}{planes}\PY{p}{)}
+             \PY{n}{m}\PY{o}{.}\PY{n}{weight}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{fill\PYZus{}}\PY{p}{(}\PY{l+m+mi}{0} \PY{k}{if} \PY{n}{init\PYZus{}zero} \PY{k}{else} \PY{l+m+mi}{1}\PY{p}{)}
+             \PY{n}{m}\PY{o}{.}\PY{n}{bias}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{zero\PYZus{}}\PY{p}{(}\PY{p}{)}
+             \PY{k}{return} \PY{n}{m}
+         
+         \PY{k}{class} \PY{n+nc}{fc1}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{ni}\PY{p}{,} \PY{n}{nf}\PY{p}{,} \PY{n}{ks}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Conv2d}\PY{p}{(}\PY{n}{ni}\PY{p}{,}\PY{n}{nf}\PY{p}{,}\PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{n}{ks}\PY{p}{,}\PY{n}{stride}\PY{o}{=}\PY{n}{stride}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{n}{padding}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{ReLU}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{MaxPool2d}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+             
+             \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+                 \PY{c+c1}{\PYZsh{}return self.relu(out)}
+                 \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+                 \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+                 \PY{k}{return} \PY{n}{out}
+         
+         \PY{k}{class} \PY{n+nc}{fc2}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{ni}\PY{p}{,} \PY{n}{nf}\PY{p}{,} \PY{n}{ks}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Conv2d}\PY{p}{(}\PY{n}{ni}\PY{p}{,}\PY{n}{nf}\PY{p}{,}\PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{n}{ks}\PY{p}{,}\PY{n}{stride}\PY{o}{=}\PY{n}{stride}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{sigmoid} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Sigmoid}\PY{p}{(}\PY{p}{)}
+                 \PY{c+c1}{\PYZsh{}self.relu = nn.ReLU(inplace=True)}
+                 
+             \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+                 \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{sigmoid}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+                 \PY{c+c1}{\PYZsh{}return self.relu(out)}
+         
+         \PY{k}{class} \PY{n+nc}{Lambda}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{lambd}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lambd} \PY{o}{=} \PY{n}{lambd}
+             \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{)}\PY{p}{:}
+                 \PY{c+c1}{\PYZsh{}pdb.set\PYZus{}trace()}
+                 \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lambd}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+             
+         \PY{k}{class} \PY{n+nc}{BasicBlock}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+             \PY{n}{expansion} \PY{o}{=} \PY{l+m+mi}{1}
+         
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{inplanes}\PY{p}{,} \PY{n}{planes}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{downsample}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv1} \PY{o}{=} \PY{n}{conv}\PY{p}{(}\PY{n}{inplanes}\PY{p}{,} \PY{n}{planes}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{n}{stride}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{bn1} \PY{o}{=} \PY{n}{bn}\PY{p}{(}\PY{n}{planes}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{ReLU}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv2} \PY{o}{=} \PY{n}{conv}\PY{p}{(}\PY{n}{planes}\PY{p}{,} \PY{n}{planes}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{bn2} \PY{o}{=} \PY{n}{bn}\PY{p}{(}\PY{n}{planes}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{downsample} \PY{o}{=} \PY{n}{downsample}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{stride} \PY{o}{=} \PY{n}{stride}
+         
+             \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{residual} \PY{o}{=} \PY{n}{x}
+                 \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{downsample} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:} \PY{n}{residual} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{downsample}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+         
+                 \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv1}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+                 \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+                 \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{bn1}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+         
+                 \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv2}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+         
+                 \PY{n}{out} \PY{o}{=} \PY{n}{residual} \PY{o}{+} \PY{n}{out}
+                 \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+                 \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{bn2}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+                 
+                 \PY{k}{return} \PY{n}{out}
+             
+         
+         \PY{k}{class} \PY{n+nc}{MyResNet}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{block}\PY{p}{,} \PY{n}{layers}\PY{p}{,} \PY{n}{num\PYZus{}classes}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{vgg\PYZus{}head}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inplanes} \PY{o}{=} \PY{l+m+mi}{64}
+         
+                 \PY{n}{features} \PY{o}{=} \PY{p}{[}\PY{n}{conv}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{64}\PY{p}{,} \PY{n}{ks}\PY{o}{=}\PY{l+m+mi}{7}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+                     \PY{p}{,} \PY{n}{bn}\PY{p}{(}\PY{l+m+mi}{64}\PY{p}{)} \PY{p}{,} \PY{n}{nn}\PY{o}{.}\PY{n}{ReLU}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)} \PY{p}{,} \PY{n}{nn}\PY{o}{.}\PY{n}{MaxPool2d}\PY{p}{(}\PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+                     \PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}make\PYZus{}layer}\PY{p}{(}\PY{n}{block}\PY{p}{,} \PY{n+nb}{int}\PY{p}{(}\PY{l+m+mi}{64}\PY{o}{*}\PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n}{layers}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+                     \PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}make\PYZus{}layer}\PY{p}{(}\PY{n}{block}\PY{p}{,} \PY{n+nb}{int}\PY{p}{(}\PY{l+m+mi}{128}\PY{o}{*}\PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n}{layers}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+                     \PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}make\PYZus{}layer}\PY{p}{(}\PY{n}{block}\PY{p}{,} \PY{n+nb}{int}\PY{p}{(}\PY{l+m+mi}{256}\PY{o}{*}\PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n}{layers}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+                     \PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}make\PYZus{}layer}\PY{p}{(}\PY{n}{block}\PY{p}{,} \PY{n+nb}{int}\PY{p}{(}\PY{l+m+mi}{512}\PY{o}{*}\PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n}{layers}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}
+                 \PY{n}{out\PYZus{}sz} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{l+m+mi}{512}\PY{o}{*}\PY{n}{k}\PY{p}{)} \PY{o}{*} \PY{n}{block}\PY{o}{.}\PY{n}{expansion}
+         
+                 \PY{k}{if} \PY{n}{vgg\PYZus{}head}\PY{p}{:}
+                     \PY{n}{features} \PY{o}{+}\PY{o}{=} \PY{p}{[}\PY{n}{nn}\PY{o}{.}\PY{n}{AdaptiveAvgPool2d}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{Flatten}\PY{p}{(}\PY{p}{)}
+                         \PY{p}{,} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{out\PYZus{}sz}\PY{o}{*}\PY{l+m+mi}{3}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4096}\PY{p}{)}\PY{p}{,} \PY{n}{nn}\PY{o}{.}\PY{n}{ReLU}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{,} \PY{n}{bn1}\PY{p}{(}\PY{l+m+mi}{4096}\PY{p}{)}\PY{p}{,} \PY{n}{nn}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.25}\PY{p}{)}
+                         \PY{p}{,} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{l+m+mi}{4096}\PY{p}{,}   \PY{l+m+mi}{4096}\PY{p}{)}\PY{p}{,} \PY{n}{nn}\PY{o}{.}\PY{n}{ReLU}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{,} \PY{n}{bn1}\PY{p}{(}\PY{l+m+mi}{4096}\PY{p}{)}\PY{p}{,} \PY{n}{nn}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.25}\PY{p}{)}
+                         \PY{p}{,} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{l+m+mi}{4096}\PY{p}{,} \PY{n}{num\PYZus{}classes}\PY{p}{)}\PY{p}{]}
+                 \PY{k}{else}\PY{p}{:} \PY{n}{features} \PY{o}{+}\PY{o}{=} \PY{p}{[}\PY{n}{nn}\PY{o}{.}\PY{n}{AdaptiveAvgPool2d}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{Flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{out\PYZus{}sz}\PY{p}{,} \PY{n}{num\PYZus{}classes}\PY{p}{)}\PY{p}{]}
+                 
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{features} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Sequential}\PY{p}{(}\PY{o}{*}\PY{n}{features}\PY{p}{)}
+         
+                 \PY{k}{for} \PY{n}{m} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{modules}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                     \PY{k}{if} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{m}\PY{p}{,} \PY{n}{nn}\PY{o}{.}\PY{n}{Conv2d}\PY{p}{)}\PY{p}{:}
+                         \PY{n}{n} \PY{o}{=} \PY{n}{m}\PY{o}{.}\PY{n}{kernel\PYZus{}size}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{n}{m}\PY{o}{.}\PY{n}{kernel\PYZus{}size}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{m}\PY{o}{.}\PY{n}{out\PYZus{}channels}
+                         \PY{n}{m}\PY{o}{.}\PY{n}{weight}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{normal\PYZus{}}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mf}{2.} \PY{o}{/} \PY{n}{n}\PY{p}{)}\PY{p}{)}
+         
+             \PY{k}{def} \PY{n+nf}{\PYZus{}make\PYZus{}layer}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{block}\PY{p}{,} \PY{n}{planes}\PY{p}{,} \PY{n}{blocks}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{downsample} \PY{o}{=} \PY{k+kc}{None}
+                 \PY{k}{if} \PY{n}{stride} \PY{o}{!=} \PY{l+m+mi}{1} \PY{o+ow}{or} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inplanes} \PY{o}{!=} \PY{n}{planes} \PY{o}{*} \PY{n}{block}\PY{o}{.}\PY{n}{expansion}\PY{p}{:}
+                     \PY{n}{downsample} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Sequential}\PY{p}{(}
+                         \PY{n}{conv}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inplanes}\PY{p}{,} \PY{n}{planes}\PY{o}{*}\PY{n}{block}\PY{o}{.}\PY{n}{expansion}\PY{p}{,} \PY{n}{ks}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{n}{stride}\PY{p}{)}\PY{p}{,}
+                         \PY{n}{bn}\PY{p}{(}\PY{n}{planes} \PY{o}{*} \PY{n}{block}\PY{o}{.}\PY{n}{expansion}\PY{p}{)}\PY{p}{,}
+                     \PY{p}{)}
+         
+                 \PY{n}{layers} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+                 \PY{n}{layers}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{block}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inplanes}\PY{p}{,} \PY{n}{planes}\PY{p}{,} \PY{n}{stride}\PY{p}{,} \PY{n}{downsample}\PY{p}{)}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inplanes} \PY{o}{=} \PY{n}{planes} \PY{o}{*} \PY{n}{block}\PY{o}{.}\PY{n}{expansion}
+                 \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{blocks}\PY{p}{)}\PY{p}{:} \PY{n}{layers}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{block}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inplanes}\PY{p}{,} \PY{n}{planes}\PY{p}{)}\PY{p}{)}
+                 \PY{k}{return} \PY{n}{nn}\PY{o}{.}\PY{n}{Sequential}\PY{p}{(}\PY{o}{*}\PY{n}{layers}\PY{p}{)}\PY{c+c1}{\PYZsh{}, nn.Dropout2d(0.5))}
+         
+             \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{features}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{c+c1}{\PYZsh{} from John Hartquist}
+         \PY{k}{def} \PY{n+nf}{mapk\PYZus{}np}\PY{p}{(}\PY{n}{preds}\PY{p}{,} \PY{n}{targs}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
+             \PY{n}{preds} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argsort}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{preds}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{n}{k}\PY{p}{]}
+             \PY{n}{score} \PY{o}{=} \PY{l+m+mf}{0.0}
+             \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{num\PYZus{}hits} \PY{o}{=} \PY{p}{(}\PY{n}{preds}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{==} \PY{n}{targs}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+                 \PY{n}{score} \PY{o}{+}\PY{o}{=} \PY{n}{num\PYZus{}hits} \PY{o}{*} \PY{p}{(}\PY{l+m+mf}{1.0} \PY{o}{/} \PY{p}{(}\PY{n}{i}\PY{o}{+}\PY{l+m+mf}{1.0}\PY{p}{)}\PY{p}{)}
+             \PY{n}{score} \PY{o}{/}\PY{o}{=} \PY{n}{preds}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{k}{return} \PY{n}{score}
+         
+         \PY{k}{def} \PY{n+nf}{mapk}\PY{p}{(}\PY{n}{preds}\PY{p}{,} \PY{n}{targs}\PY{p}{,} \PY{n}{k}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{mapk\PYZus{}np}\PY{p}{(}\PY{n}{to\PYZus{}np}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{,} \PY{n}{to\PYZus{}np}\PY{p}{(}\PY{n}{targs}\PY{p}{)}\PY{p}{,} \PY{n}{k}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{k}{def} \PY{n+nf}{B6}\PY{p}{(}\PY{n}{ni}\PY{p}{,}\PY{n}{nf}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{nn}\PY{o}{.}\PY{n}{Sequential}\PY{p}{(}
+                 \PY{n}{conv}\PY{p}{(}\PY{n}{ni}\PY{p}{,}\PY{n}{nf}\PY{p}{)}\PY{p}{,} 
+                 \PY{n}{bn}\PY{p}{(}\PY{n}{nf}\PY{p}{)}\PY{p}{,} 
+                 \PY{n}{nn}\PY{o}{.}\PY{n}{ReLU}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{,}
+                 \PY{n}{nn}\PY{o}{.}\PY{n}{MaxPool2d}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+         
+         \PY{k}{class} \PY{n+nc}{AudioCNN}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{num\PYZus{}classes}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+                 \PY{c+c1}{\PYZsh{}self.num\PYZus{}classes = num\PYZus{}classes}
+         
+                 \PY{n}{features} \PY{o}{=} \PY{p}{[}\PY{n}{BasicBlock}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{,} \PY{n}{BasicBlock}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,}\PY{l+m+mi}{32}\PY{p}{)}\PY{p}{,} \PY{n}{BasicBlock}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{64}\PY{p}{)}\PY{p}{,}
+                             \PY{n}{BasicBlock}\PY{p}{(}\PY{l+m+mi}{64}\PY{p}{,}\PY{l+m+mi}{128}\PY{p}{)}\PY{p}{,} \PY{n}{BasicBlock}\PY{p}{(}\PY{l+m+mi}{128}\PY{p}{,}\PY{l+m+mi}{256}\PY{p}{)}\PY{p}{,} \PY{n}{B6}\PY{p}{(}\PY{l+m+mi}{256}\PY{p}{,}\PY{l+m+mi}{512}\PY{p}{)}\PY{p}{,}
+                             \PY{n}{fc1}\PY{p}{(}\PY{l+m+mi}{512}\PY{p}{,}\PY{l+m+mi}{1024}\PY{p}{)}\PY{p}{,} \PY{n}{fc2}\PY{p}{(}\PY{l+m+mi}{1024}\PY{p}{,}\PY{n}{num\PYZus{}classes}\PY{p}{)}\PY{p}{,} 
+                             \PY{n}{Lambda}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{.}\PY{n}{view}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{41}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{,} 
+                             \PY{n}{Lambda}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{dim}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+                 
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{features} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Sequential}\PY{p}{(}\PY{o}{*}\PY{n}{features}\PY{p}{)}
+                 
+             \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{)}\PY{p}{:} \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{features}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+                 
+\end{Verbatim}
+
+
+    \subsubsection{Model}\label{model}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}55}]:} \PY{n}{tfms} \PY{o}{=} \PY{n}{aud\PYZus{}tfms\PYZus{}from\PYZus{}stats}\PY{p}{(}\PY{n}{stats}\PY{p}{,} \PY{n}{aug\PYZus{}tfms}\PY{o}{=}\PY{p}{[}\PY{n}{RandomLighting}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+         \PY{n}{md} \PY{o}{=} \PY{n}{AudioClassifierData}\PY{o}{.}\PY{n}{from\PYZus{}csv}\PY{p}{(}\PY{n}{PATH}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{audio\PYZus{}train}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{trn.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{val\PYZus{}idxs}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{bs}\PY{o}{=}\PY{l+m+mi}{32}\PY{p}{,} \PY{n}{tfms}\PY{o}{=}\PY{n}{tfms}\PY{p}{,} \PY{n}{test\PYZus{}name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{audio\PYZus{}test}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}57}]:} \PY{n}{m} \PY{o}{=} \PY{n}{MyResNet}\PY{p}{(}\PY{n}{BasicBlock}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,} \PY{n}{num\PYZus{}classes}\PY{o}{=}\PY{l+m+mi}{41}\PY{p}{,} \PY{n}{vgg\PYZus{}head}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+         \PY{n}{opt} \PY{o}{=} \PY{n}{optim}\PY{o}{.}\PY{n}{Adam}
+         \PY{n}{metrics} \PY{o}{=} \PY{p}{[}\PY{n}{accuracy}\PY{p}{,} \PY{n}{mapk}\PY{p}{]}
+         \PY{n}{loss} \PY{o}{=} \PY{n}{F}\PY{o}{.}\PY{n}{cross\PYZus{}entropy}
+         \PY{n}{learn} \PY{o}{=} \PY{n}{ConvLearner}\PY{o}{.}\PY{n}{from\PYZus{}model\PYZus{}data}\PY{p}{(}\PY{n}{m}\PY{p}{,} \PY{n}{md}\PY{p}{,} \PY{n}{crit}\PY{o}{=}\PY{n}{loss}\PY{p}{,} \PY{n}{metrics}\PY{o}{=}\PY{n}{metrics}\PY{p}{,} \PY{n}{opt\PYZus{}fn}\PY{o}{=}\PY{n}{opt}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{learn}\PY{o}{.}\PY{n}{unfreeze}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{learn}\PY{o}{.}\PY{n}{lr\PYZus{}find}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{learn}\PY{o}{.}\PY{n}{sched}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{learn}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{l+m+mf}{1e\PYZhy{}4}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{wds}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}5}\PY{p}{,} \PY{n}{cycle\PYZus{}len}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{use\PYZus{}clr\PYZus{}beta}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mf}{0.95}\PY{p}{,}\PY{l+m+mf}{0.75}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}59}]:} \PY{n}{learn}\PY{o}{.}\PY{n}{save}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2d\PYZus{}res\PYZus{}1ch\PYZus{}hop25610s\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{learn}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2d\PYZus{}res\PYZus{}1ch\PYZus{}hop25610s\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \subsubsection{Model Evaluation}\label{model-evaluation}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{n}{learn}\PY{o}{.}\PY{n}{model}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}
+         \PY{n}{val\PYZus{}preds} \PY{o}{=} \PY{n}{learn}\PY{o}{.}\PY{n}{predict\PYZus{}with\PYZus{}targs}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{val\PYZus{}acc} \PY{o}{=} \PY{n}{accuracy\PYZus{}np}\PY{p}{(}\PY{o}{*}\PY{n}{val\PYZus{}preds}\PY{p}{)}
+         \PY{n}{val\PYZus{}map} \PY{o}{=} \PY{n}{mapk\PYZus{}np}\PY{p}{(}\PY{o}{*}\PY{n}{val\PYZus{}preds}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Val Acc: }\PY{l+s+si}{\PYZob{}val\PYZus{}acc:.3f\PYZcb{}}\PY{l+s+s1}{, Val MAP: }\PY{l+s+si}{\PYZob{}val\PYZus{}map:.3f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Val Acc: 0.697, Val MAP: 0.770
+
+    \end{Verbatim}
+
+    \subsubsection{Predictions}\label{predictions}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}60}]:} \PY{n}{multi\PYZus{}preds}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{learn}\PY{o}{.}\PY{n}{TTA}\PY{p}{(}\PY{n}{is\PYZus{}test}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+                                              
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}61}]:} \PY{n}{preds} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{multi\PYZus{}preds}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}62}]:} \PY{n}{np}\PY{o}{.}\PY{n}{save}\PY{p}{(}\PY{n}{PATH}\PY{o}{/}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tmp/preds14.npy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{preds}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}63}]:} \PY{n}{classes} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{trn}\PY{o}{.}\PY{n}{label}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{top\PYZus{}3\PYZus{}idx} \PY{o}{=} \PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{argsort}\PY{p}{(}\PY{n}{preds}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{:}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}fnames}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+         \PY{n}{pred\PYZus{}labels} \PY{o}{=} \PY{p}{[}\PY{n+nb}{list}\PY{p}{(}\PY{n}{classes}\PY{p}{[}\PY{p}{[}\PY{n}{top\PYZus{}3\PYZus{}idx}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}fnames}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+         \PY{n}{preds} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{ls}\PY{p}{)} \PY{k}{for} \PY{n}{ls} \PY{o+ow}{in} \PY{n}{pred\PYZus{}labels}\PY{p}{]}
+         \PY{n}{preds}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{]}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}63}]:} ['Trumpet Saxophone Oboe',
+          'Hi-hat Chime Shatter',
+          'Cello Double\_bass Acoustic\_guitar',
+          'Trumpet Violin\_or\_fiddle Meow',
+          'Bass\_drum Knock Gunshot\_or\_gunfire']
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}64}]:} \PY{n}{tested} \PY{o}{=} \PY{p}{[}\PY{n}{md}\PY{o}{.}\PY{n}{test\PYZus{}ds}\PY{o}{.}\PY{n}{fnames}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}fnames}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}65}]:} \PY{n}{idx} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+         \PY{k}{for} \PY{n}{fname} \PY{o+ow}{in} \PY{n}{test\PYZus{}fnames}\PY{p}{:}
+             \PY{k}{for} \PY{n}{name} \PY{o+ow}{in} \PY{n}{tested}\PY{p}{:}
+                 \PY{k}{if} \PY{n}{name} \PY{o}{==} \PY{n}{fname}\PY{p}{:}
+                     \PY{n}{idx}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{tested}\PY{o}{.}\PY{n}{index}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}66}]:} \PY{p}{[}\PY{n}{tested}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{idx}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}66}]:} ['00063640.wav',
+          '0013a1db.wav',
+          '002bb878.wav',
+          '002d392d.wav',
+          '00326aa9.wav']
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}67}]:} \PY{n}{test\PYZus{}fnames}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{]}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}67}]:} ['00063640.wav',
+          '0013a1db.wav',
+          '002bb878.wav',
+          '002d392d.wav',
+          '00326aa9.wav']
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}68}]:} \PY{n}{test}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{label}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{[}\PY{n}{preds}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{idx}\PY{p}{]}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}69}]:} \PY{n}{test}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}69}]:}           fname                              label
+         0  00063640.wav          Shatter Tearing Fireworks
+         1  0013a1db.wav                 Flute Oboe Trumpet
+         2  002bb878.wav  Bass\_drum Computer\_keyboard Knock
+         3  002d392d.wav              Bass\_drum Flute Cello
+         4  00326aa9.wav            Oboe Clarinet Telephone
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}70}]:} \PY{n}{test}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{n}{PATH}\PY{o}{/}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tmp/sub13.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}71}]:} \PY{n}{test}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}71}]:} (9400, 2)
+\end{Verbatim}
+            
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
