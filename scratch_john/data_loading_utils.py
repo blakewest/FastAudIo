@@ -5,7 +5,7 @@ import librosa
 from tqdm import tqdm_notebook as tqdm
 
 
-def read_file(filename, path='', sample_rate=None):
+def read_file(filename, path='', sample_rate=None, trim=False):
     ''' Reads in a wav file and returns it as an np.float32 array in the range [-1,1] '''
     filename = Path(path) / filename
     file_sr, data = wavfile.read(filename)
@@ -17,6 +17,8 @@ def read_file(filename, path='', sample_rate=None):
         if len(data) > 0:
             data = librosa.core.resample(data, file_sr, sample_rate, res_type='kaiser_fast')
         file_sr = sample_rate
+    if trim:
+        data = librosa.effects.trim(data, top_db=50)[0]
     return data, file_sr
 
 

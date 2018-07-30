@@ -33,15 +33,17 @@ def pad_to_longest(items, dim=0, pad_mode='wrap'):
     longest_len = max(item.shape[dim] for item in items)
     
     for i in range(len(items)):
+        # Reset pad_mode_to_use because we may set it to 'constant' below, in an edge case.
+        pad_mode_to_use = pad_mode
         item = items[i]
         item_len = item.shape[dim]
         pad_len = longest_len - item_len
         if pad_len > 0:
             if item_len == 0:
-                pad_mode = 'constant'  # cannot wrap an empty array
+                pad_mode_to_use = 'constant'  # cannot wrap an empty array
             pad_width = [(0,pad_len) if d == dim else (0,0) 
                         for d in range(total_dim)]
-            items[i] = np.pad(item, pad_width, pad_mode)
+            items[i] = np.pad(item, pad_width, pad_mode_to_use)
     return items
 
 

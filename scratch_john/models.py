@@ -1,4 +1,5 @@
 import math
+import torch
 import torch.nn as nn
 from fastai.layers import Flatten
 from helpers import Lambda
@@ -72,9 +73,10 @@ class BasicBlock(nn.Module):
     
 
 class AudioResNet(nn.Module):
-    def __init__(self, block, layers, num_classes):
+    def __init__(self, block, layers, num_classes, fully_conv=False):
         super().__init__()
         self.inplanes = 64 # ? 
+        print("Model head is fully conv?", fully_conv)
         
         features = [
             Lambda(lambda x: x.view(x.shape[0], 1, x.shape[1], x.shape[2])),
@@ -85,16 +87,23 @@ class AudioResNet(nn.Module):
             self.make_layer(block, 64, layers[0]),
             self.make_layer(block, 128, layers[1], stride=2),
             self.make_layer(block, 256, layers[2], stride=2),
-            self.make_layer(block, 512, layers[2], stride=2),
+            self.make_layer(block, 512, layers[3], stride=2),
         ]
         out_sz = 512 * block.expansion
         
-        features += [
-            nn.AdaptiveAvgPool2d(1),
-            Flatten(),
-            #nn.Dropout(0.1),
-            nn.Linear(out_sz, num_classes)
-        ]
+        if fully_conv:
+            features += [
+                nn.Conv2d(out_sz, num_classes, 3, padding=1),
+                Lambda(lambda x: x.view(x.shape[0], num_classes, -1)),
+                Lambda(lambda x: torch.mean(x, dim=2))
+            ]
+        else:
+            features += [
+                nn.AdaptiveAvgPool2d(1),
+                Flatten(),
+                #nn.Dropout(0.1),
+                nn.Linear(out_sz, num_classes)
+            ]
         
         self.features = nn.Sequential(*features)
         
