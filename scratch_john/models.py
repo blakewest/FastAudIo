@@ -47,7 +47,7 @@ class fc2(nn.Module):
     
 class BasicBlock(nn.Module):
     expansion = 1
-    def __init__(self, inplanes, planes, stride=1, downsample=None):
+    def __init__(self, inplanes, planes, stride=1, downsample=None, dropout=0):
         super().__init__()
         self.conv1 = conv(inplanes, planes, stride=stride)
         self.bn1 = bn(planes)
@@ -56,7 +56,7 @@ class BasicBlock(nn.Module):
         self.bn2 = bn(planes)
         self.downsample = downsample
         self.stride = stride
-        self.dropout = nn.Dropout2d(0.25)
+        self.dropout = nn.Dropout2d(dropout)
     def forward(self, x):
         residual = x
         if self.downsample is not None:
@@ -68,14 +68,15 @@ class BasicBlock(nn.Module):
         out = residual + out
         out = self.relu(out)
         out = self.bn2(out)
-        #out = self.dropout(out)
+        out = self.dropout(out)
         return out
     
 
 class AudioResNet(nn.Module):
-    def __init__(self, block, layers, num_classes, fully_conv=False):
+    def __init__(self, block, layers, num_classes, fully_conv=False, dropout=0):
         super().__init__()
         self.inplanes = 64 # ? 
+        self.dropout = dropout
         print("Model head is fully conv?", fully_conv)
         
         features = [
@@ -84,10 +85,10 @@ class AudioResNet(nn.Module):
             bn(64),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2, padding=1),
-            self.make_layer(block, 64, layers[0]),
-            self.make_layer(block, 128, layers[1], stride=2),
-            self.make_layer(block, 256, layers[2], stride=2),
-            self.make_layer(block, 512, layers[3], stride=2),
+            self.make_layer(block, 64, layers[0], dropout=dropout),
+            self.make_layer(block, 128, layers[1], stride=2, dropout=dropout),
+            self.make_layer(block, 256, layers[2], stride=2, dropout=dropout),
+            self.make_layer(block, 512, layers[3], stride=2, dropout=dropout),
         ]
         out_sz = 512 * block.expansion
         
@@ -113,7 +114,7 @@ class AudioResNet(nn.Module):
                 m.weight.data.normal_(0, math.sqrt(2. / n))
                 
         
-    def make_layer(self, block, planes, blocks, stride=1):
+    def make_layer(self, block, planes, blocks, stride=1, dropout=0):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
@@ -121,10 +122,10 @@ class AudioResNet(nn.Module):
                 bn(planes * block.expansion)
             )
         layers = []
-        layers.append(block(self.inplanes, planes, stride, downsample))
+        layers.append(block(self.inplanes, planes, stride, downsample, dropout=dropout))
         self.inplanes = planes * block.expansion
         for i in range(1, blocks):
-            layers.append(block(self.inplanes, planes))
+            layers.append(block(self.inplanes, planes, dropout=dropout))
         return nn.Sequential(*layers)
     
     def forward(self, x):

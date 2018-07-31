@@ -17,8 +17,8 @@ def read_file(filename, path='', sample_rate=None, trim=False):
         if len(data) > 0:
             data = librosa.core.resample(data, file_sr, sample_rate, res_type='kaiser_fast')
         file_sr = sample_rate
-    if trim:
-        data = librosa.effects.trim(data, top_db=50)[0]
+    if trim and len(data) > 1:
+        data = librosa.effects.trim(data, top_db=35)[0]
     return data, file_sr
 
 
